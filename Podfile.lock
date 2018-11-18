@@ -1,0 +1,24 @@
+PODS:
+  - Kingfisher (4.10.1)
+  - R.swift (5.0.0.alpha.2):
+    - R.swift.Library (~> 5.0.0.alpha.2)
+  - R.swift.Library (5.0.0.alpha.2)
+
+DEPENDENCIES:
+  - Kingfisher (~> 4.0)
+  - R.swift (= 5.0.0.alpha.2)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Kingfisher
+    - R.swift
+    - R.swift.Library
+
+SPEC CHECKSUMS:
+  Kingfisher: c148cd7b47ebde9989f6bc7c27dcaa79d81279a0
+  R.swift: 31fa1bd537fa81307815cc622122f33331f32174
+  R.swift.Library: 3c21b823839bf5a6769dc7f96cb44479dab51b1b
+
+PODFILE CHECKSUM: 9efc10f2b0bc8b03b95b4d4e3437d7a3a5686ebc
+
+COCOAPODS: 1.5.3
