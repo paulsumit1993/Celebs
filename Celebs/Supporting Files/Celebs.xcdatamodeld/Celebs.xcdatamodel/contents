@@ -7,6 +7,7 @@
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="emailId"/>
+                <constraint value="fullName"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>

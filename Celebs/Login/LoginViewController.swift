@@ -34,11 +34,10 @@ class LoginViewController: UIViewController {
         loginActivityIndicatorView.startAnimating()
         CelebrityAPI.fetchList.post(with: email) { [weak self] result in
             switch result {
-            case .success(let celebs):
+            case .success(_):
                 LoggedInStateManager.set(loggedIn: true)
                 LoggedInStateManager.set(email: email)
-                self?.coreDataManager.addToDataBase(celebrities: celebs)
-                self?.coordinator?.openCelebrityScreen(with: self?.loginActivityIndicatorView)
+                self?.coordinator?.openCelebrityScreen()
             case .failure(let e):
                 DispatchQueue.main.async {
                     self?.loginActivityIndicatorView.stopAnimating()

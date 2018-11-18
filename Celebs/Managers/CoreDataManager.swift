@@ -7,7 +7,6 @@
 //
 
 import CoreData
-import UIKit
 
 class CoreDataManager {
     // MARK: - Core Data stack
@@ -22,27 +21,32 @@ class CoreDataManager {
         return container
     }()
     
+    lazy var fetchedResultsController: NSFetchedResultsController<SSCelebrity> = {
+        let fetchRequest: NSFetchRequest<SSCelebrity> = SSCelebrity.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SSCelebrity.emailId), ascending: true)]
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        return fetchedResultsController
+    }()
     
-    func addToDataBase(celebrities: [Celebrity]) {
-            persistentContainer.performBackgroundTask { context in
-                for celebrity in celebrities {
-                    let localCelebrity = SSCelebrity(context: context)
-                    localCelebrity.fullName = celebrity.fullName
-                    localCelebrity.emailId = celebrity.emailId
-                    localCelebrity.imageUrl = celebrity.imageUrl
+    
+    func addToDataBase(celebrities: [Celebrity], completion: @escaping (Bool) -> Void) {
+        let context = fetchedResultsController.managedObjectContext
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        context.performAndWait {
+            for celebrity in celebrities {
+                let localCelebrity = SSCelebrity(context: context)
+                localCelebrity.fullName = celebrity.fullName
+                localCelebrity.emailId = celebrity.emailId
+                localCelebrity.imageUrl = celebrity.imageUrl
             }
-            try? context.save()
-        }
-    }
-    
-    func saveContext() {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
+            
+            guard context.hasChanges else { return }
+            
             do {
                 try context.save()
+                completion(true)
             } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                completion(false)
             }
         }
     }

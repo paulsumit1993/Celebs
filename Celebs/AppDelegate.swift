@@ -32,13 +32,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = navController
         window?.makeKeyAndVisible()
     }
-    
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        coreDataManager.saveContext()
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        coreDataManager.saveContext()
-    }
 }
 

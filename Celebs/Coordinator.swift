@@ -22,7 +22,7 @@ class MainCoordinator: Coordinator {
     
     func start() {
         if LoggedInStateManager.isLoggedIn {
-            openCelebrityScreen(with: nil)
+            openCelebrityScreen()
         } else {
             openLoginScreen()
         }
@@ -37,12 +37,11 @@ class MainCoordinator: Coordinator {
         }
     }
     
-    func openCelebrityScreen(with activityIndicator: UIActivityIndicatorView?) {
+    func openCelebrityScreen() {
         let vc = R.storyboard.main.celebrityListViewController()!
         vc.coordinator = self
         DispatchQueue.main.async { [weak self] in
             self?.navigationController.navigationBar.isHidden = true
-            activityIndicator?.stopAnimating()
             self?.navigationController.pushViewController(vc, animated: true)
         }
     }

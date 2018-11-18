@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 
 class CelebrityListViewController: UIViewController {
 
@@ -15,19 +14,11 @@ class CelebrityListViewController: UIViewController {
     
     private var coreDataManager = CoreDataManager()
     weak var coordinator: MainCoordinator?
-    
-    lazy var fetchedResultsController: NSFetchedResultsController<SSCelebrity> = {
-        let fetchRequest: NSFetchRequest<SSCelebrity> = SSCelebrity.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SSCelebrity.emailId), ascending: true)]
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataManager.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-        fetchedResultsController.delegate = self
-        return fetchedResultsController
-    }()
+    lazy var fetchedResultsController = coreDataManager.fetchedResultsController
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-        fetchCelebritiesFromDB()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -36,6 +27,7 @@ class CelebrityListViewController: UIViewController {
     }
 
     private func setupTableView() {
+        fetchedResultsController.delegate = self
         celebrityTableView.dataSource = self
         celebrityTableView.estimatedRowHeight = 100
         celebrityTableView.rowHeight = UITableView.automaticDimension
@@ -44,19 +36,22 @@ class CelebrityListViewController: UIViewController {
     private func fetchCelebritiesFromDB() {
         do {
             try fetchedResultsController.performFetch()
+            celebrityTableView.reloadData()
         } catch {
-            print("\(error), \(error.localizedDescription)")
+            print("\(error.localizedDescription)")
         }
     }
     
     private func refreshDatafromAPI() {
         guard let email = LoggedInStateManager.email else { return }
-        CelebrityAPI.fetchList.post(with: email) { results in
+        CelebrityAPI.fetchList.post(with: email) { [weak self] results in
             switch results {
             case .success(let celebs):
-                self.coreDataManager.addToDataBase(celebrities: celebs)
-            case .failure(_): break
-                // retry
+                self?.coreDataManager.addToDataBase(celebrities: celebs) { _ in
+                    self?.fetchCelebritiesFromDB()
+                }
+            case .failure(_):
+                self?.fetchCelebritiesFromDB()
             }
         }
     }
