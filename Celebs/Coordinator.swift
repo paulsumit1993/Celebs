@@ -13,6 +13,7 @@ protocol Coordinator {
     func start()
 }
 
+/// Helps in navigation between view controllers
 class MainCoordinator: Coordinator {
     var navigationController: UINavigationController
     

@@ -10,6 +10,7 @@ import Foundation
 
 /// This should ideally be implemented with the keychain APIs in production.
 
+/// Used for managing the user email for future API calls
 struct LoggedInStateManager {
     
     static private let loggedInStateString = "isUserLoggedIn"

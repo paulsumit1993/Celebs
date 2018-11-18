@@ -36,6 +36,7 @@ class CelebrityListViewController: UIViewController {
     private func fetchCelebritiesFromDB() {
         do {
             try fetchedResultsController.performFetch()
+            // FIXME: reloadData() should is called as the fetchedResultsController delegate methods are not triggering
             celebrityTableView.reloadData()
         } catch {
             print("\(error.localizedDescription)")

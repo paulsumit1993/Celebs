@@ -29,6 +29,11 @@ enum CelebrityAPI {
         }
     }
     
+    /// Method to post the user email and fetch the celebrity data list.
+    ///
+    /// - Parameters:
+    ///   - email: the email address input by the user.
+    ///   - completion: completion block which will return with either an array of celebrity or an error.
     func post(with email: String, completion: @escaping(ResultType<[Celebrity]>) -> Void) {
         guard let url = CelebrityAPI.fetchList.url else { completion(.failure(error: JSONDecodingError.unknownError)); return }
         var baseUrlRequest = URLRequest(url: url)

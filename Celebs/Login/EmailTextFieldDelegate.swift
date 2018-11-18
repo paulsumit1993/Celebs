@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// <#Description#>
 class EmailTextFieldDelegate: NSObject, UITextFieldDelegate {
     
     private var errorLabel: UILabel
