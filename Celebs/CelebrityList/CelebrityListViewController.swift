@@ -9,7 +9,7 @@
 import UIKit
 
 class CelebrityListViewController: UIViewController {
-
+    
     @IBOutlet weak var celebrityTableView: UITableView!
     
     private var coreDataManager = CoreDataManager()
@@ -19,13 +19,14 @@ class CelebrityListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
+        fetchCelebritiesFromDB()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         refreshDatafromAPI()
     }
-
+    
     private func setupTableView() {
         fetchedResultsController.delegate = self
         celebrityTableView.dataSource = self
@@ -36,8 +37,6 @@ class CelebrityListViewController: UIViewController {
     private func fetchCelebritiesFromDB() {
         do {
             try fetchedResultsController.performFetch()
-            // FIXME: reloadData() should is called as the fetchedResultsController delegate methods are not triggering
-            celebrityTableView.reloadData()
         } catch {
             print("\(error.localizedDescription)")
         }

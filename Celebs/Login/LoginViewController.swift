@@ -21,7 +21,6 @@ class LoginViewController: UIViewController {
     
     private var emailTextFieldDelegate: EmailTextFieldDelegate?
     weak var coordinator: MainCoordinator?
-    private var coreDataManager = CoreDataManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
